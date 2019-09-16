@@ -7,10 +7,10 @@ import Moment from 'moment-timezone';
 import { Textfit } from 'react-textfit';
 
 import ApiManager from './network/ApiManager';
+import StatusCode from './network/StatusCode';
+import WeatherIconConst from './WeatherIconConst';
 
 // import LocationOn from '@material-ui/icons/LocationOn';
-
-import WeatherIconConst from './WeatherIconConst';
 
 const Root = styled.div`
     height: 100%;
@@ -74,16 +74,24 @@ class WeatherWidget extends React.Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.getWeatherData(37.504296, 127.024792);
     }
 
-    getWeatherData = async (latitude, longitude) => {
-        let weather = await ApiManager.getWeather(latitude, longitude);
-        console.log(weather);
-        this.setState({
-            weather: weather,
-        });
+    getWeatherData = (latitude, longitude) => {
+        ApiManager.getWeather(latitude, longitude, this.getWeatherCallback);
+    }
+
+    getWeatherCallback = (statusCode, response) => {
+        switch (statusCode) {
+            case StatusCode.OK:
+                this.setState({
+                    weather: response,
+                });
+                break;
+            default:
+                break;
+        }
     }
 
     render() {

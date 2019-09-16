@@ -1,5 +1,7 @@
 // src/ApiManager.js
 
+var request = require('request')
+
 const OPEN_WEATHER_MAP_API_KEY = '3dae235cf1b980a7814ab71411ea9d3b';
 
 // OpenWeatherMap API URL
@@ -7,7 +9,7 @@ const OPEN_WEATHER_MAP_API_URL = 'https://api.openweathermap.org/data/2.5/weathe
 const OPEN_WEATHER_MAP_FORECAST_API_URL = 'https://api.openweathermap.org/data/2.5/forecast';
 
 const ApiManager = {
-    getWeather: (lat, lon) => {
+    getWeather: (lat, lon, callback) => {
         var params = {
             appid: OPEN_WEATHER_MAP_API_KEY,
             units: 'metric',
@@ -15,14 +17,19 @@ const ApiManager = {
             lon: lon,
         };
 
-        var url = new URL(OPEN_WEATHER_MAP_API_URL);
-        url.search = new URLSearchParams(params);
-        console.log(url);
+        var option = {url: OPEN_WEATHER_MAP_API_URL, qs: params};
 
-        return fetch(url).then(response => response.json());
+        request.get(option, function (error, response, body) {
+            if (error) {
+                console.log(error);
+                return
+            }
+
+            callback(response.statusCode, JSON.parse(response.body));
+        });
     },
 
-    getWeatherForecast: (lat, lon) => {
+    getWeatherForecast: (lat, lon, callback) => {
         var params = {
             appid: OPEN_WEATHER_MAP_API_KEY,
             units: 'metric',
@@ -30,10 +37,16 @@ const ApiManager = {
             lon: lon,
         };
 
-        var url = new URL(OPEN_WEATHER_MAP_FORECAST_API_URL);
-        url.search = new URLSearchParams(params);
+        var option = {url: OPEN_WEATHER_MAP_FORECAST_API_URL, qs: params};
 
-        return fetch(url).then(response => response.json());
+        request.get(option, function (error, response, body) {
+            if (error) {
+                console.log(error);
+                return
+            }
+
+            callback(response.statusCode, JSON.parse(response.body));
+        });
     },
 }
 

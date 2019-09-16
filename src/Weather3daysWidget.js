@@ -7,7 +7,7 @@ import { Textfit } from 'react-textfit';
 import Moment from 'moment-timezone';
 
 import ApiManager from './network/ApiManager';
-
+import StatusCode from './network/StatusCode';
 import WeatherIconConst from './WeatherIconConst';
 
 const TIME_MILLIS_DAY = Moment.duration(1, 'days').asMilliseconds();
@@ -64,55 +64,69 @@ class Weather3daysWidget extends React.Component {
         this.getWeatherData(37.504296, 127.024792);
     }
 
-    getWeatherData = async (latitude, longitude) => {
-        let weather = await ApiManager.getWeather(latitude, longitude);
-        this.setState({
-            weather: weather,
-        });
+    getWeatherData = (latitude, longitude) => {
+        ApiManager.getWeather(latitude, longitude, this.getWeatherDataCallback);
+        ApiManager.getWeatherForecast(latitude, longitude, this.getWeatherForecastDataCallback);
+    }
 
+    getWeatherDataCallback = (statusCode, response) => {
+        switch (statusCode) {
+            case StatusCode.OK:
+                this.setState({
+                    weather: response,
+                });
+                break;
+            default:
+                break;
+        }
+    }
 
+    getWeatherForecastDataCallback = (statusCode, response) => {
+        switch (statusCode) {
+            case StatusCode.OK:
+                var weatherForecast = [];
+                response.list.forEach((forecast) => {
+                    var todayMidnight = new Date();
+                    todayMidnight.setHours(24,0,0,0);
 
-        let weatherForecasts = await ApiManager.getWeatherForecast(latitude, longitude);
+                    const date = new Date(forecast.dt * 1000);
+                    if (date.getTime() >= todayMidnight.getTime()) {
+                        // elapsedDay 0 means tomorrow, 1 means next tomorrow, and so on...
+                        var elapsedDay = Math.floor((date.getTime() - todayMidnight.getTime()) / TIME_MILLIS_DAY);
 
-        var weatherForecast = [];
-        weatherForecasts.list.forEach((forecast) => {
-            var todayMidnight = new Date();
-            todayMidnight.setHours(24,0,0,0);
+                        // Get minimum, maximum temperature of the day
+                        if (weatherForecast[elapsedDay] === undefined) {
+                            weatherForecast[elapsedDay] = {
+                                date: date,
+                                icon: forecast.weather[0].icon,
+                                temp_min: forecast.main.temp_min,
+                                temp_max: forecast.main.temp_max,
+                            };
+                        } else {
+                            var curTempMin = weatherForecast[elapsedDay].temp_min;
+                            if (curTempMin !== undefined) {
+                                weatherForecast[elapsedDay].temp_min = Math.min(curTempMin, forecast.main.temp_min);
+                            } else {
+                                weatherForecast[elapsedDay].temp_min = forecast.main.temp_min;
+                            }
 
-            const date = new Date(forecast.dt * 1000);
-            if (date.getTime() >= todayMidnight.getTime()) {
-                // elapsedDay 0 means tomorrow, 1 means next tomorrow, and so on...
-                var elapsedDay = Math.floor((date.getTime() - todayMidnight.getTime()) / TIME_MILLIS_DAY);
-
-                // Get minimum, maximum temperature of the day
-                if (weatherForecast[elapsedDay] === undefined) {
-                    weatherForecast[elapsedDay] = {
-                        date: date,
-                        icon: forecast.weather[0].icon,
-                        temp_min: forecast.main.temp_min,
-                        temp_max: forecast.main.temp_max,
-                    };
-                } else {
-                    var curTempMin = weatherForecast[elapsedDay].temp_min;
-                    if (curTempMin !== undefined) {
-                        weatherForecast[elapsedDay].temp_min = Math.min(curTempMin, forecast.main.temp_min);
-                    } else {
-                        weatherForecast[elapsedDay].temp_min = forecast.main.temp_min;
+                            var curTempMax = weatherForecast[elapsedDay].temp_max;
+                            if (curTempMax !== undefined) {
+                                weatherForecast[elapsedDay].temp_max = Math.max(curTempMax, forecast.main.temp_min);
+                            } else {
+                                weatherForecast[elapsedDay].temp_max = forecast.main.temp_max;
+                            }
+                        }
                     }
+                });
 
-                    var curTempMax = weatherForecast[elapsedDay].temp_max;
-                    if (curTempMax !== undefined) {
-                        weatherForecast[elapsedDay].temp_max = Math.max(curTempMax, forecast.main.temp_min);
-                    } else {
-                        weatherForecast[elapsedDay].temp_max = forecast.main.temp_max;
-                    }
-                }
-            }
-        });
-
-        this.setState({
-            weatherForecast: weatherForecast,
-        });
+                this.setState({
+                    weatherForecast: weatherForecast,
+                });
+                break;
+            default:
+                break;
+        }
     }
 
     render() {

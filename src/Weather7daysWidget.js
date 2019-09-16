@@ -9,6 +9,7 @@ import { Textfit } from 'react-textfit';
 import { LineChart } from '@stickyboard/recharts';
 
 import ApiManager from './network/ApiManager';
+import StatusCode from './network/StatusCode';
 import WeatherIconConst from './WeatherIconConst';
 
 // import SimpleDateAxisTick from '../ui/SimpleDateAxisTick';
@@ -38,26 +39,35 @@ class Weather7daysWidget extends React.Component {
         this.getWeatherData(37.504296, 127.024792);
     }
 
-    getWeatherData = async (latitude, longitude) => {
-        let weatherForecasts = await ApiManager.getWeatherForecast(latitude, longitude);
+    getWeatherData = (latitude, longitude) => {
+        ApiManager.getWeatherForecast(latitude, longitude, this.getWeatherForecastDataCallback);
+    }
 
-        var weatherForecastList = [];
+    getWeatherForecastDataCallback = (statusCode, response) => {
+        switch (statusCode) {
+            case StatusCode.OK:
+                // console.log(response);
+                var weatherForecastList = [];
 
-        weatherForecasts.list.forEach((forecast) => {
-            const date = new Date(forecast.dt * 1000);
+                response.list.forEach((forecast) => {
+                    const date = new Date(forecast.dt * 1000);
 
-            weatherForecastList.push({
-                date: forecast.dt * 1000,
-                icon: forecast.weather[0].icon,
-                temp: forecast.main.temp,
-                temp_min: forecast.main.temp_min,
-                temp_max: forecast.main.temp_max,
-            });
-        });
+                    weatherForecastList.push({
+                        date: forecast.dt * 1000,
+                        icon: forecast.weather[0].icon,
+                        temp: forecast.main.temp,
+                        temp_min: forecast.main.temp_min,
+                        temp_max: forecast.main.temp_max,
+                    });
+                });
 
-        this.setState({
-            weatherForecastList: weatherForecastList,
-        });
+                this.setState({
+                    weatherForecastList: weatherForecastList,
+                });
+                break;
+            default:
+                break;
+        }
     }
 
     render() {

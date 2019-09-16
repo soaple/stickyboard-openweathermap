@@ -48,5 +48,8 @@ module.exports = {
         },
         'prop-types': 'prop-types'
     },
-    plugins: []
+    plugins: [],
+    node: {
+        fs: 'empty'
+    }
 };
