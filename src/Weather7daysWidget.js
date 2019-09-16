@@ -60,8 +60,7 @@ class Weather7daysWidget extends React.Component {
         });
     }
 
-    render () {
-        const { classes, theme } = this.props;
+    render() {
         const { weatherForecastList } = this.state;
 
         return (

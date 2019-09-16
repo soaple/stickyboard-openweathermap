@@ -2,93 +2,72 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Moment from 'moment-timezone';
+import { Textfit } from 'react-textfit';
 
-import ApiManager from '../../network/ApiManager';
-import StatusCode from '../../network/StatusCode';
-
-import { withStyles } from '@material-ui/core/styles';
-import { red, lightBlue, blueGrey, grey } from '@material-ui/core/colors';
+import ApiManager from './network/ApiManager';
 
 import LocationOn from '@material-ui/icons/LocationOn';
 
-import Moment from 'moment-timezone';
-
-import { Textfit } from 'react-textfit';
-
-import Grid from '@material-ui/core/Grid';
-
 import DateUtil from '../../utils/DateUtil';
 
-import Const from '../../constants/Const';
-import WeatherIconConst from '../../constants/WeatherIconConst';
+import WeatherIconConst from './WeatherIconConst';
 
-const styles = theme => ({
-    root: {
-        height: '100%',
-        background: grey[800],
-        // paddingLeft: theme.spacing.unit * 3,
-        // paddingTop: theme.spacing.unit * 2,
-        // paddingRight: theme.spacing.unit * 3,
-        // paddingBottom: theme.spacing.unit,
-    },
-    weather: {
-        height: '100%',
-        // background: grey[800],
-        color: '#FFFFFF',
-        textAlign: 'center',
-        margin: 'auto',
-        // padding: theme.spacing.unit * 2,
-        fontWeight: 700,
-    },
-    weatherIcon: {
-        width: '40%',
-        height: '70%',
-        position: 'absolute',
-        left: theme.spacing.unit * 2,
-        top: 0,
-        color: '#FFFFFF',
-        textShadow: '2px 2px 30px ' + grey[600],
-    },
-    date: {
-        width: '60%',
-        height: '30%',
-        position: 'absolute',
-        right: theme.spacing.unit * 2,
-        top: theme.spacing.unit * 2,
-        textAlign: 'right',
-    },
-    location: {
-        width: '10%',
-        height: '10%',
-        position: 'absolute',
-        left: theme.spacing.unit * 2,
-        bottom: theme.spacing.unit * 1,
-        color: '#FFFFFF',
-    },
-    temperature: {
-        width: '60%',
-        height: '40%',
-        position: 'absolute',
-        right: theme.spacing.unit * 2,
-        bottom: theme.spacing.unit * 1,
-        textAlign: 'right',
-        color: '#FFFFFF',
-        textShadow: '2px 2px 30px ' + grey[600],
-        fontWeight: 700,
-        // [theme.breakpoints.up('xs')]: {
-        //     fontSize: 50,
-        // },
-        // [theme.breakpoints.up('sm')]: {
-        //     fontSize: 60,
-        // },
-        // [theme.breakpoints.up('md')]: {
-        //     fontSize: 70,
-        // },
-    },
-});
+const Root = styled.div`
+    height: 100%;
+    background: rgb(115, 115, 115);
+`;
+
+const Weather = styled.div`
+    height: '100%';
+    color: '#FFFFFF';
+    text-align: 'center';
+    margin: 'auto';
+    font-weight: 700;
+`;
+
+const WeatherIconTextfit = styled(TextFit)`
+    width: 40%;
+    height: 70%;
+    position: 'absolute';
+    left: 16px;
+    top: 0;
+    color: '#FFFFFF';
+    text-shadow: '2px 2px 30px #808080';
+`;
+
+const DateTextfit = styled(TextFit)`
+    width: 60%;
+    height: 30%;
+    position: 'absolute';
+    right: 16px;
+    top: 16px;
+    text-align: 'right';
+`;
+
+const LocationTextFit = styled(TextFit)`
+    width: '10%';
+    height: '10%';
+    position: 'absolute';
+    left: 16px;
+    bottom: 8px;
+    color: '#FFFFFF';
+`;
+
+const TemperatureTextFit = styled(TextFit)`
+    width: '60%';
+    height: '40%';
+    position: 'absolute';
+    right: 16px;
+    bottom: 8px;
+    text-align: 'right';
+    color: '#FFFFFF';
+    text-shadow: '2px 2px 30px #909090';
+    font-weight: 700;
+`;
 
 class WeatherWidget extends React.Component {
-
     constructor (props) {
         super(props)
 
@@ -117,66 +96,61 @@ class WeatherWidget extends React.Component {
         }
     }
 
-    render () {
-        const { classes, theme } = this.props;
+    render() {
         const { weather } = this.state;
 
         return (
-            <div className={classes.root}>
-                <div className={classes.weather}>
+            <Root>
+                <Weather>
                     {/* Icon */}
-                    <Textfit
+                    <WeatherIconTextfit
                         mode="single"
                         min={14}
                         max={200}
-                        forceSingleModeWidth={false}
-                        className={classes.weatherIcon}>
+                        forceSingleModeWidth={false}>
                         <p>
                             <i className={weather !== undefined ? WeatherIconConst[weather.weather[0].icon] : ''}/>
                         </p>
-                    </Textfit>
+                    </WeatherIconTextfit>
 
                     {/* Date */}
-                    <Textfit
+                    <DateTextfit
                         mode="multi"
                         min={14}
-                        max={28}
-                        className={classes.date}>
+                        max={28}>
                         <p style={{marginBottom: 2}}>
                             {weather !== undefined ? DateUtil.convertDayToString(Moment(weather.dt * 1000).day()): ''}
                         </p>
                         <p>
                             {weather !== undefined ? Moment(weather.dt * 1000).format('YYYY/MM/DD') : '( - )'}
                         </p>
-                    </Textfit>
+                    </DateTextfit>
 
                     {/* Location */}
-                    <Textfit
+                    <LocationTextFit
                         mode="single"
                         min={14}
                         max={56}
-                        forceSingleModeWidth={false}
-                        className={classes.location}>
+                        forceSingleModeWidth={false}>
                         <LocationOn
                             height={'100%'}
                             color={'inherit'}
                             hovercolor={'#fffc00'} />
                         {weather !== undefined ? weather.name + ', ' + weather.sys.country : '-'}
-                    </Textfit>
+                    </LocationTextFit>
 
                     {/* Temperature */}
-                    <Textfit
+                    <TemperatureTextFit
                         mode="single"
                         min={28}
                         max={200}
-                        forceSingleModeWidth={false}
-                        className={classes.temperature}>
+                        forceSingleModeWidth={false}>
                         <p>
                             {weather !== undefined ? weather.main.temp + '°C' : '-°C'}
                         </p>
-                    </Textfit>
-                </div>
-            </div>
+                    </TemperatureTextFit>
+                </Weather>
+            </Root>
         )
     }
 }
@@ -186,4 +160,4 @@ WeatherWidget.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(WeatherWidget);
+export default WeatherWidget;
