@@ -5,6 +5,7 @@ module.exports = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
+        publicPath: './dist/',
         filename: 'index.js',
         libraryTarget: 'commonjs2'
     },
@@ -24,9 +25,22 @@ module.exports = {
                     ]
                 }
             },
-        }, {
-            test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
+        },
+        // {
+        //     test: /\.css$/i,
+        //     use: ['style-loader', 'css-loader'],
+        // },
+        {
+            test: /\.(css|ico|png|jpe?g|gif|svg|woff|woff2|ttf|eot)$/i,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        publicPath: './dist/',
+                        name: '[path][name].[ext]',
+                    },
+                },
+            ],
         }]
     },
     resolve: {

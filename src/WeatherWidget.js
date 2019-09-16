@@ -10,59 +10,55 @@ import ApiManager from './network/ApiManager';
 import StatusCode from './network/StatusCode';
 import WeatherIconConst from './WeatherIconConst';
 
-// import LocationOn from '@material-ui/icons/LocationOn';
+require('../static/css/weather-icons.min.css');
 
 const Root = styled.div`
     height: 100%;
-    background: #737373;
-`;
-
-const Weather = styled.div`
-    height: '100%';
-    color: #FFFFFF;
-    text-align: 'center';
-    margin: 'auto';
-    font-weight: 700;
+    background: #424242;
+    border-radius: 16px;
 `;
 
 const WeatherIconTextfit = styled(Textfit)`
     width: 40%;
     height: 70%;
-    position: 'absolute';
+    position: absolute;
     left: 16px;
     top: 0;
     color: #FFFFFF;
-    text-shadow: '2px 2px 30px #808080';
+    text-shadow: 2px 2px 30px #757575;
 `;
 
 const DateTextfit = styled(Textfit)`
     width: 60%;
     height: 30%;
-    position: 'absolute';
+    position: absolute;
     right: 16px;
     top: 16px;
-    text-align: 'right';
+    color: #FFFFFF;
+    font-weight: 700;
+    text-align: right;
 `;
 
 const LocationTextfit = styled(Textfit)`
-    width: '10%';
-    height: '10%';
-    position: 'absolute';
+    width: 10%;
+    height: 10%;
+    position: absolute;
     left: 16px;
     bottom: 8px;
     color: #FFFFFF;
+    font-weight: 700;
 `;
 
 const TemperatureTextfit = styled(Textfit)`
-    width: '60%';
-    height: '40%';
-    position: 'absolute';
+    width: 60%;
+    height: 40%;
+    position: absolute;
     right: 16px;
     bottom: 8px;
-    text-align: 'right';
+    text-align: right;
     color: #FFFFFF;
-    text-shadow: '2px 2px 30px #909090';
     font-weight: 700;
+    text-shadow: 2px 2px 30px #757575;
 `;
 
 class WeatherWidget extends React.Component {
@@ -99,57 +95,50 @@ class WeatherWidget extends React.Component {
 
         return (
             <Root>
-                <Weather>
-                    {/* Icon */}
-                    <WeatherIconTextfit
-                        mode="single"
-                        min={14}
-                        max={200}
-                        forceSingleModeWidth={false}>
-                        <p>
-                            <i className={weather !== undefined ? WeatherIconConst[weather.weather[0].icon] : ''}/>
-                        </p>
-                    </WeatherIconTextfit>
+                {/* Icon */}
+                <WeatherIconTextfit
+                    mode="single"
+                    min={14}
+                    max={200}
+                    forceSingleModeWidth={false}>
+                    <p>
+                        <i className={weather !== undefined ? WeatherIconConst[weather.weather[0].icon] : ''}/>
+                    </p>
+                </WeatherIconTextfit>
 
-                    {/* Date */}
-                    <DateTextfit
-                        mode="multi"
-                        min={14}
-                        max={28}>
-                        <p style={{marginBottom: 2}}>
-                            {weather !== undefined ? Moment(weather.dt * 1000).format('ddd'): ''}
-                        </p>
-                        <p>
-                            {weather !== undefined ? Moment(weather.dt * 1000).format('YYYY/MM/DD') : '( - )'}
-                        </p>
-                    </DateTextfit>
+                {/* Date */}
+                <DateTextfit
+                    mode="multi"
+                    min={14}
+                    max={28}>
+                    <p style={{marginBottom: 2}}>
+                        {weather !== undefined ? Moment(weather.dt * 1000).format('ddd'): ''}
+                    </p>
+                    <p>
+                        {weather !== undefined ? Moment(weather.dt * 1000).format('YYYY/MM/DD') : '( - )'}
+                    </p>
+                </DateTextfit>
 
-                    {/* Location */}
-                    <LocationTextfit
-                        mode="single"
-                        min={14}
-                        max={56}
-                        forceSingleModeWidth={false}>
-                        {
-                        // <LocationOn
-                        //     height={'100%'}
-                        //     color={'inherit'}
-                        //     hovercolor={'#fffc00'} />
-                        }
-                        {weather !== undefined ? weather.name + ', ' + weather.sys.country : '-'}
-                    </LocationTextfit>
+                {/* Location */}
+                <LocationTextfit
+                    mode="single"
+                    min={14}
+                    max={56}
+                    forceSingleModeWidth={false}>
+                    <img src={require('../static/image/location_pin.svg')} />
+                    {weather !== undefined ? weather.name + ', ' + weather.sys.country : '-'}
+                </LocationTextfit>
 
-                    {/* Temperature */}
-                    <TemperatureTextfit
-                        mode="single"
-                        min={28}
-                        max={200}
-                        forceSingleModeWidth={false}>
-                        <p>
-                            {weather !== undefined ? weather.main.temp + '°C' : '-°C'}
-                        </p>
-                    </TemperatureTextfit>
-                </Weather>
+                {/* Temperature */}
+                <TemperatureTextfit
+                    mode="single"
+                    min={28}
+                    max={200}
+                    forceSingleModeWidth={false}>
+                    <p>
+                        {weather !== undefined ? weather.main.temp + '°C' : '-°C'}
+                    </p>
+                </TemperatureTextfit>
             </Root>
         )
     }

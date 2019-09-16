@@ -17,7 +17,7 @@ import WeatherIconConst from './WeatherIconConst';
 
 
 const Root = styled.div`
-    height: '100%';
+    height: 100%;
     padding: 16px 8px;
 `;
 
