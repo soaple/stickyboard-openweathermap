@@ -26,7 +26,7 @@ const TitleTextfit = styled(Textfit)`
 `;
 
 class Weather7daysWidget extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -34,7 +34,7 @@ class Weather7daysWidget extends React.Component {
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.getWeatherData(37.504296, 127.024792);
     }
 

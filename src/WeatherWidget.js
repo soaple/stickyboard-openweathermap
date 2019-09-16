@@ -10,8 +10,6 @@ import ApiManager from './network/ApiManager';
 
 import LocationOn from '@material-ui/icons/LocationOn';
 
-import DateUtil from '../../utils/DateUtil';
-
 import WeatherIconConst from './WeatherIconConst';
 
 const Root = styled.div`
@@ -68,7 +66,7 @@ const TemperatureTextFit = styled(TextFit)`
 `;
 
 class WeatherWidget extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -76,7 +74,7 @@ class WeatherWidget extends React.Component {
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.getWeatherData(37.504296, 127.024792);
     }
 
@@ -119,7 +117,7 @@ class WeatherWidget extends React.Component {
                         min={14}
                         max={28}>
                         <p style={{marginBottom: 2}}>
-                            {weather !== undefined ? DateUtil.convertDayToString(Moment(weather.dt * 1000).day()): ''}
+                            {weather !== undefined ? Moment(weather.dt * 1000).format('ddd'): ''}
                         </p>
                         <p>
                             {weather !== undefined ? Moment(weather.dt * 1000).format('YYYY/MM/DD') : '( - )'}
