@@ -25,29 +25,29 @@ const Weather = styled.div`
     flex-direction: column;
 `;
 
-const DateTextFit = styled(TextFit)`
+const DateTextfit = styled(Textfit)`
     flex: 3;
 `;
 
-const WeatherIconTextFit = styled(TextFit)`
+const WeatherIconTextfit = styled(Textfit)`
     flex: 4;
-    color: rgb(81, 88, 94);
+    color: #51585e;
 `;
 
-const TemperatureTextFit = styled(TextFit)`
+const TemperatureTextfit = styled(Textfit)`
     flex: 3;
 `;
 
 const TempMax = styled.p`
     margin-bottom: 2;
     font-weight: 700;
-    color: rgb(255, 69, 69);
+    color: #ff4545;
 `;
 
 const TempMin = styled.p`
     margin-bottom: 2;
     font-weight: 700;
-    color: rgb(69, 182, 255);
+    color: #45b6ff;
 `;
 
 class Weather3daysWidget extends React.Component {
@@ -64,15 +64,15 @@ class Weather3daysWidget extends React.Component {
         this.getWeatherData(37.504296, 127.024792);
     }
 
-    getWeatherData = (latitude, longitude) => {
-        let weather = ApiManager.getWeather(latitude, longitude);
+    getWeatherData = async (latitude, longitude) => {
+        let weather = await ApiManager.getWeather(latitude, longitude);
         this.setState({
-            weather: response,
+            weather: weather,
         });
 
 
 
-        let weatherForecasts = ApiManager.getWeatherForecast(latitude, longitude);
+        let weatherForecasts = await ApiManager.getWeatherForecast(latitude, longitude);
 
         var weatherForecast = [];
         weatherForecasts.list.forEach((forecast) => {
@@ -121,23 +121,23 @@ class Weather3daysWidget extends React.Component {
         return (
             <Root>
                 <Weather>
-                    <DateTextFit
+                    <DateTextfit
                         mode="multi"
                         min={14}
                         max={28}>
                         <p style={{marginBottom: 2}}>{weather ? Moment(weather.dt * 1000).day(): '요일'}</p>
                         <p>{weather ? Moment(weather.dt * 1000).format('(MM.DD)') : '( - )'}</p>
-                    </DateTextFit>
+                    </DateTextfit>
 
-                    <WeatherIconTextFit
+                    <WeatherIconTextfit
                         mode="single"
                         min={50}
                         max={200}
                         forceSingleModeWidth={false}>
                         <i className={weather ? WeatherIconConst[weather.weather[0].icon] : ''}/>
-                    </WeatherIconTextFit>
+                    </WeatherIconTextfit>
 
-                    <TemperatureTextFit
+                    <TemperatureTextfit
                         mode="multi"
                         min={14}
                         max={28}>
@@ -147,25 +147,25 @@ class Weather3daysWidget extends React.Component {
                         <TempMin>
                             {`${weather ? weather.main.temp_min : '-'} °C`}
                         </TempMin>
-                    </TemperatureTextFit>
+                    </TemperatureTextfit>
                 </Weather>
 
                 <Weather>
-                    <DateTextFit
+                    <DateTextfit
                         mode="multi"
                         min={14}
                         max={28}>
                         <p style={{marginBottom: 2}}>{weatherForecast ? Moment(weatherForecast[0].date).day(): '요일'}</p>
                         <p>{weatherForecast ? Moment(weatherForecast[0].date).format('(MM.DD)') : '( - )'}</p>
-                    </DateTextFit>
+                    </DateTextfit>
 
-                    <WeatherIconTextFit
+                    <WeatherIconTextfit
                         mode="single"
                         min={50}
                         max={200}
                         forceSingleModeWidth={false}>
                         <i className={weatherForecast ? WeatherIconConst[weatherForecast[0].icon] : ''}/>
-                    </WeatherIconTextFit>
+                    </WeatherIconTextfit>
 
                     <Textfit
                         mode="multi"
@@ -181,23 +181,23 @@ class Weather3daysWidget extends React.Component {
                 </Weather>
 
                 <Weather>
-                    <DateTextFit
+                    <DateTextfit
                         mode="multi"
                         min={14}
                         max={28}>
                         <p style={{marginBottom: 2}}>{weatherForecast ? Moment(weatherForecast[1].date).day(): '요일'}</p>
                         <p>{weatherForecast ? Moment(weatherForecast[1].date).format('(MM.DD)') : '( - )'}</p>
-                    </DateTextFit>
+                    </DateTextfit>
 
-                    <WeatherIconTextFit
+                    <WeatherIconTextfit
                         mode="single"
                         min={50}
                         max={200}
                         forceSingleModeWidth={false}>
                         <i className={weatherForecast ? WeatherIconConst[weatherForecast[1].icon] : ''}/>
-                    </WeatherIconTextFit>
+                    </WeatherIconTextfit>
 
-                    <TemperatureTextFit
+                    <TemperatureTextfit
                         mode="multi"
                         min={14}
                         max={28}>
@@ -207,7 +207,7 @@ class Weather3daysWidget extends React.Component {
                         <TempMin>
                             {`${weatherForecast ? weatherForecast[1].temp_min : '-'} °C`}
                         </TempMin>
-                    </TemperatureTextFit>
+                    </TemperatureTextfit>
                 </Weather>
             </Root>
         )

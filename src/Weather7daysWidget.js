@@ -38,8 +38,8 @@ class Weather7daysWidget extends React.Component {
         this.getWeatherData(37.504296, 127.024792);
     }
 
-    getWeatherData = (latitude, longitude) => {
-        let weatherForecasts = ApiManager.getWeatherForecast(latitude, longitude);
+    getWeatherData = async (latitude, longitude) => {
+        let weatherForecasts = await ApiManager.getWeatherForecast(latitude, longitude);
 
         var weatherForecastList = [];
 
@@ -73,16 +73,16 @@ class Weather7daysWidget extends React.Component {
                     {'5 day / 3 hour forecast'}
                 </TitleTextfit>
 
-                <ResponsiveContainer>
-                    <LineChart
-                        data={weatherForecastList}
-                        xAxisDataKey={'date'}
-                        lineType={'natural'}
-                        lineDataKey={'temp'}
-                        lineName={'Temperature'}
-                        lineColor={rgb(255, 66, 66)} />
+                <LineChart
+                    data={weatherForecastList}
+                    xAxisDataKey={'date'}
+                    lineType={'natural'}
+                    lineDataKey={'temp'}
+                    lineName={'Temperature'}
+                    lineColor={'#ff4242'} />
 
-                    {
+                {
+                // <ResponsiveContainer>
                     // <LineChart
                     //     data={weatherForecastList}
                     //     margin={{top: 20, right: 30, left: -10, bottom: 50}}>
@@ -107,16 +107,11 @@ class Weather7daysWidget extends React.Component {
                     //         dot={true}
                     //         activeDot={{r: 6}} />
                     // </LineChart>
-                    }
-                </ResponsiveContainer>
+                // </ResponsiveContainer>
+                }
             </Root>
         )
     }
 }
-
-Weather7daysWidget.propTypes = {
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
-};
 
 export default Weather7daysWidget;

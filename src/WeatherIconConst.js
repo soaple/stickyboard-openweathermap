@@ -3,7 +3,7 @@
 /**
  * Mapping OpenWeatherMap icon code to WeatherIcon code
  */
-var WeatherIconConst = {
+const WeatherIconConst = {
 
     // Clear sky
     '01d': 'wi wi-day-sunny',      // Day
@@ -42,4 +42,4 @@ var WeatherIconConst = {
     '50n': 'wi wi-night-fog',      //  Night
 }
 
-module.exports = WeatherIconConst
+export default WeatherIconConst;

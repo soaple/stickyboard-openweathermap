@@ -17,6 +17,7 @@ const ApiManager = {
 
         var url = new URL(OPEN_WEATHER_MAP_API_URL);
         url.search = new URLSearchParams(params);
+        console.log(url);
 
         return fetch(url).then(response => response.json());
     },

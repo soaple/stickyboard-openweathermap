@@ -8,34 +8,34 @@ import { Textfit } from 'react-textfit';
 
 import ApiManager from './network/ApiManager';
 
-import LocationOn from '@material-ui/icons/LocationOn';
+// import LocationOn from '@material-ui/icons/LocationOn';
 
 import WeatherIconConst from './WeatherIconConst';
 
 const Root = styled.div`
     height: 100%;
-    background: rgb(115, 115, 115);
+    background: #737373;
 `;
 
 const Weather = styled.div`
     height: '100%';
-    color: '#FFFFFF';
+    color: #FFFFFF;
     text-align: 'center';
     margin: 'auto';
     font-weight: 700;
 `;
 
-const WeatherIconTextfit = styled(TextFit)`
+const WeatherIconTextfit = styled(Textfit)`
     width: 40%;
     height: 70%;
     position: 'absolute';
     left: 16px;
     top: 0;
-    color: '#FFFFFF';
+    color: #FFFFFF;
     text-shadow: '2px 2px 30px #808080';
 `;
 
-const DateTextfit = styled(TextFit)`
+const DateTextfit = styled(Textfit)`
     width: 60%;
     height: 30%;
     position: 'absolute';
@@ -44,23 +44,23 @@ const DateTextfit = styled(TextFit)`
     text-align: 'right';
 `;
 
-const LocationTextFit = styled(TextFit)`
+const LocationTextfit = styled(Textfit)`
     width: '10%';
     height: '10%';
     position: 'absolute';
     left: 16px;
     bottom: 8px;
-    color: '#FFFFFF';
+    color: #FFFFFF;
 `;
 
-const TemperatureTextFit = styled(TextFit)`
+const TemperatureTextfit = styled(Textfit)`
     width: '60%';
     height: '40%';
     position: 'absolute';
     right: 16px;
     bottom: 8px;
     text-align: 'right';
-    color: '#FFFFFF';
+    color: #FFFFFF;
     text-shadow: '2px 2px 30px #909090';
     font-weight: 700;
 `;
@@ -78,20 +78,12 @@ class WeatherWidget extends React.Component {
         this.getWeatherData(37.504296, 127.024792);
     }
 
-    getWeatherData = (latitude, longitude) => {
-        ApiManager.getWeather(latitude, longitude, this.getWeatherCallback);
-    }
-
-    getWeatherCallback = (statusCode, response) => {
-        switch (statusCode) {
-            case StatusCode.OK:
-                this.setState({
-                    weather: response,
-                });
-                break;
-            default:
-                break;
-        }
+    getWeatherData = async (latitude, longitude) => {
+        let weather = await ApiManager.getWeather(latitude, longitude);
+        console.log(weather);
+        this.setState({
+            weather: weather,
+        });
     }
 
     render() {
@@ -125,20 +117,22 @@ class WeatherWidget extends React.Component {
                     </DateTextfit>
 
                     {/* Location */}
-                    <LocationTextFit
+                    <LocationTextfit
                         mode="single"
                         min={14}
                         max={56}
                         forceSingleModeWidth={false}>
-                        <LocationOn
-                            height={'100%'}
-                            color={'inherit'}
-                            hovercolor={'#fffc00'} />
+                        {
+                        // <LocationOn
+                        //     height={'100%'}
+                        //     color={'inherit'}
+                        //     hovercolor={'#fffc00'} />
+                        }
                         {weather !== undefined ? weather.name + ', ' + weather.sys.country : '-'}
-                    </LocationTextFit>
+                    </LocationTextfit>
 
                     {/* Temperature */}
-                    <TemperatureTextFit
+                    <TemperatureTextfit
                         mode="single"
                         min={28}
                         max={200}
@@ -146,16 +140,11 @@ class WeatherWidget extends React.Component {
                         <p>
                             {weather !== undefined ? weather.main.temp + '°C' : '-°C'}
                         </p>
-                    </TemperatureTextFit>
+                    </TemperatureTextfit>
                 </Weather>
             </Root>
         )
     }
 }
-
-WeatherWidget.propTypes = {
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
-};
 
 export default WeatherWidget;
