@@ -23,29 +23,33 @@ const Weather = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
 
 const DateTextfit = styled(Textfit)`
-    flex: 3;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
 `;
 
 const WeatherIconTextfit = styled(Textfit)`
-    flex: 4;
+    flex: 2;
     color: #51585e;
 `;
 
 const TemperatureTextfit = styled(Textfit)`
-    flex: 3;
+    flex: 1;
 `;
 
 const TempMax = styled.p`
-    margin-bottom: 2;
+    margin-bottom: 4px;
     font-weight: 700;
     color: #ff4545;
 `;
 
 const TempMin = styled.p`
-    margin-bottom: 2;
+    /* margin-bottom: 4px; */
     font-weight: 700;
     color: #45b6ff;
 `;
@@ -139,7 +143,7 @@ class Weather3daysWidget extends React.Component {
                         mode="multi"
                         min={14}
                         max={28}>
-                        <p style={{marginBottom: 2}}>{weather ? Moment(weather.dt * 1000).day(): '요일'}</p>
+                        <p style={{marginBottom: 2}}>{weather ? Moment(weather.dt * 1000).format('ddd'): '-'}</p>
                         <p>{weather ? Moment(weather.dt * 1000).format('(MM.DD)') : '( - )'}</p>
                     </DateTextfit>
 
@@ -169,7 +173,7 @@ class Weather3daysWidget extends React.Component {
                         mode="multi"
                         min={14}
                         max={28}>
-                        <p style={{marginBottom: 2}}>{weatherForecast ? Moment(weatherForecast[0].date).day(): '요일'}</p>
+                        <p style={{marginBottom: 2}}>{weatherForecast ? Moment(weatherForecast[0].date).format('ddd'): '-'}</p>
                         <p>{weatherForecast ? Moment(weatherForecast[0].date).format('(MM.DD)') : '( - )'}</p>
                     </DateTextfit>
 
@@ -199,7 +203,7 @@ class Weather3daysWidget extends React.Component {
                         mode="multi"
                         min={14}
                         max={28}>
-                        <p style={{marginBottom: 2}}>{weatherForecast ? Moment(weatherForecast[1].date).day(): '요일'}</p>
+                        <p style={{marginBottom: 2}}>{weatherForecast ? Moment(weatherForecast[0].date).format('ddd'): '-'}</p>
                         <p>{weatherForecast ? Moment(weatherForecast[1].date).format('(MM.DD)') : '( - )'}</p>
                     </DateTextfit>
 
