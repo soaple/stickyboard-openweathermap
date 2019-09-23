@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Moment from 'moment-timezone';
 import { Textfit } from 'react-textfit';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 import ApiManager from './network/ApiManager';
 import StatusCode from './network/StatusCode';
 import WeatherIconConst from './WeatherIconConst';
 
-require('../static/css/weather-icons.min.css');
+// require('../static/css/weather-icons.min.css');
 
 const Root = styled.div`
     height: 100%;
@@ -125,7 +127,7 @@ class WeatherWidget extends React.Component {
                     min={14}
                     max={56}
                     forceSingleModeWidth={false}>
-                    <img src={require('../static/image/location_pin.svg')} />
+                    <FontAwesomeIcon style={{ marginRight: 8 }} icon={faMapMarkerAlt} />
                     {weather !== undefined ? weather.name + ', ' + weather.sys.country : '-'}
                 </LocationTextfit>
 

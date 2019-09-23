@@ -1,4 +1,4 @@
-// src/StatusCode.js
+// src/network/StatusCode.js
 
 var StatusCode = {
 

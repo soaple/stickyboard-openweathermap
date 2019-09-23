@@ -26,22 +26,23 @@ module.exports = {
                 }
             },
         },
-        // {
-        //     test: /\.css$/i,
-        //     use: ['style-loader', 'css-loader'],
-        // },
         {
-            test: /\.(css|ico|png|jpe?g|gif|svg|woff|woff2|ttf|eot)$/i,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: {
-                        publicPath: './dist/',
-                        name: '[path][name].[ext]',
-                    },
-                },
-            ],
-        }]
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader'],
+        },
+        // {
+        //     test: /\.(ico|png|jpe?g|gif|svg|woff|woff2|ttf|eot)$/i,
+        //     use: [
+        //         {
+        //             loader: 'file-loader',
+        //             options: {
+        //                 publicPath: './dist/',
+        //                 name: '[path][name].[ext]',
+        //             },
+        //         },
+        //     ],
+        // }
+        ]
     },
     resolve: {
         extensions: ['.js', '.jsx']

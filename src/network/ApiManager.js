@@ -1,4 +1,4 @@
-// src/ApiManager.js
+// src/network/ApiManager.js
 
 var request = require('request')
 
