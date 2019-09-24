@@ -73,7 +73,8 @@ class WeatherWidget extends React.Component {
     }
 
     componentDidMount () {
-        this.getWeatherData(37.504296, 127.024792);
+        const { latitude, longitude } = this.props;
+        this.getWeatherData(latitude, longitude);
     }
 
     getWeatherData = (latitude, longitude) => {

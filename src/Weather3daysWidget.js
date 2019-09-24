@@ -21,22 +21,29 @@ const Root = styled.div`
 
 const Weather = styled.div`
     flex: 1;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    height: 100%;
     justify-content: center;
     align-items: center;
 `;
 
 const DateTextfit = styled(Textfit)`
     flex: 1;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 `;
 
+const DateText = styled.p`
+    margin-bottom: 2px;
+    text-align: center;
+`;
+
 const WeatherIconTextfit = styled(Textfit)`
     flex: 2;
+    display: flex;
     justify-content: center;
     align-items: center;
     color: #51585e;
@@ -44,6 +51,7 @@ const WeatherIconTextfit = styled(Textfit)`
 
 const TemperatureTextfit = styled(Textfit)`
     flex: 1;
+    display: flex;
 `;
 
 const TempMax = styled.p`
@@ -69,7 +77,8 @@ class Weather3daysWidget extends React.Component {
     }
 
     componentDidMount() {
-        this.getWeatherData(37.504296, 127.024792);
+        const { latitude, longitude } = this.props;
+        this.getWeatherData(latitude, longitude);
     }
 
     getWeatherData = (latitude, longitude) => {
@@ -147,9 +156,9 @@ class Weather3daysWidget extends React.Component {
                         mode="multi"
                         min={14}
                         max={28}>
-                        <p style={{marginBottom: 2, textAlign: 'center'}}>
+                        <DateText>
                             {weather ? Moment(weather.dt * 1000).format('ddd'): '-'}
-                        </p>
+                        </DateText>
                         <p>
                             {weather ? Moment(weather.dt * 1000).format('(MM.DD)') : '( - )'}
                         </p>
@@ -181,8 +190,12 @@ class Weather3daysWidget extends React.Component {
                         mode="multi"
                         min={14}
                         max={28}>
-                        <p style={{marginBottom: 2}}>{weatherForecast ? Moment(weatherForecast[0].date).format('ddd'): '-'}</p>
-                        <p>{weatherForecast ? Moment(weatherForecast[0].date).format('(MM.DD)') : '( - )'}</p>
+                        <DateText>
+                            {weatherForecast ? Moment(weatherForecast[0].date).format('ddd'): '-'}
+                        </DateText>
+                        <p>
+                            {weatherForecast ? Moment(weatherForecast[0].date).format('(MM.DD)') : '( - )'}
+                        </p>
                     </DateTextfit>
 
                     <WeatherIconTextfit
@@ -211,8 +224,12 @@ class Weather3daysWidget extends React.Component {
                         mode="multi"
                         min={14}
                         max={28}>
-                        <p style={{marginBottom: 2}}>{weatherForecast ? Moment(weatherForecast[0].date).format('ddd'): '-'}</p>
-                        <p>{weatherForecast ? Moment(weatherForecast[1].date).format('(MM.DD)') : '( - )'}</p>
+                        <DateText>
+                            {weatherForecast ? Moment(weatherForecast[0].date).format('ddd'): '-'}
+                        </DateText>
+                        <p>
+                            {weatherForecast ? Moment(weatherForecast[1].date).format('(MM.DD)') : '( - )'}
+                        </p>
                     </DateTextfit>
 
                     <WeatherIconTextfit
