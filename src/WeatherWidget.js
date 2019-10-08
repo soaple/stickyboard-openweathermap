@@ -115,7 +115,7 @@ class WeatherWidget extends React.Component {
                     min={14}
                     max={28}>
                     <p style={{marginBottom: 2}}>
-                        {weather !== undefined ? Moment(weather.dt * 1000).format('ddd'): ''}
+                        {weather !== undefined ? Moment(weather.dt * 1000).format('ddd'): '-'}
                     </p>
                     <p>
                         {weather !== undefined ? Moment(weather.dt * 1000).format('YYYY/MM/DD') : '( - )'}
